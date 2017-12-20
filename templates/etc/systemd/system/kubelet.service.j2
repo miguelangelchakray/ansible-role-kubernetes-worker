@@ -36,6 +36,9 @@ ExecStart={{k8s_bin_dir}}/kubelet \
   --cni-bin-dir={{k8s_cni_bin_dir}} \
   --serialize-image-pulls={{k8s_worker_kubelet_serialize_image_pulls}} \
   --fail-swap-on={{k8s_worker_kubelet_fail_swap_on}} \
+  {% if k8s_worker_kubelet_hostname_override is defined and k8s_worker_kubelet_hostname_override != '' %}
+  --hostname-override={{k8s_worker_kubelet_hostname_override}} \
+  {% endif %}
   --v=2
 
 Restart=on-failure
