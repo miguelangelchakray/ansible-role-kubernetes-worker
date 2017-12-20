@@ -26,7 +26,7 @@ ExecStart={{k8s_bin_dir}}/kubelet \
   --tls-cert-file={{k8s_conf_dir}}/cert-k8s-apiserver.pem \
   --tls-private-key-file={{k8s_conf_dir}}/cert-k8s-apiserver-key.pem \
   --require-kubeconfig \
-  --address={{hostvars[inventory_hostname]['ansible_' + k8s_interface].ipv4.address}} \
+  --address={{k8s_worker_kubelet_address}} \
   --node-ip={{hostvars[inventory_hostname]['ansible_' + k8s_interface].ipv4.address}} \
   --healthz-bind-address={{hostvars[inventory_hostname]['ansible_' + k8s_interface].ipv4.address}} \
   --healthz-port={{k8s_worker_kubelet_healthz_port}} \
