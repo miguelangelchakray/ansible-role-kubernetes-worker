@@ -3,6 +3,7 @@ k8s_conf_dir: "/var/lib/kubernetes"
 k8s_bin_dir: "/usr/local/bin"
 k8s_release: "1.8.4"
 k8s_interface: "tap0"
+k8s_cloud_provider:
 
 k8s_ca_conf_directory: "/etc/k8s/certs"
 k8s_config_directory: "/etc/k8s/configs"
@@ -34,9 +35,12 @@ k8s_worker_kubelet_cadvisor_port: "4194" # port or "0" to disable
 k8s_worker_kubelet_cloud_provider: ""
 k8s_worker_kubelet_healthz_port: "10248"
 k8s_worker_kubelet_fail_swap_on: "false"
+k8s_worker_kubelet_hostname_override:
+k8s_worker_kubelet_address: "{{hostvars[inventory_hostname]['ansible_' + k8s_interface].ipv4.address}}"
 
 k8s_worker_kubeproxy_conf_dir: "/var/lib/kube-proxy"
 k8s_worker_kubeproxy_proxy_mode: "iptables"
+k8s_worker_kubeproxy_bind_address: "{{hostvars[inventory_hostname]['ansible_' + k8s_interface].ipv4.address}}"
 
 k8s_controller_manager_cluster_cidr: "10.200.0.0/16"
 

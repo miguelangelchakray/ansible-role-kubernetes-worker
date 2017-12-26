@@ -180,6 +180,7 @@
     mode: 0644
   notify:
     - reload systemd
+    - restart kubelet
   tags:
     - k8s-worker
 
@@ -210,6 +211,7 @@
     mode: 0644
   notify:
     - reload systemd
+    - restart kube-proxy
   tags:
     - k8s-worker
 
