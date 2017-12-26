@@ -39,6 +39,9 @@ ExecStart={{k8s_bin_dir}}/kubelet \
   {% if k8s_worker_kubelet_hostname_override is defined and k8s_worker_kubelet_hostname_override != '' %}
   --hostname-override={{k8s_worker_kubelet_hostname_override}} \
   {% endif %}
+  {% if k8s_cloud_provider is defined and k8s_cloud_provider != '' %}
+    --cloud-provider={{k8s_cloud_provider}} \
+  {% endif %}
   --v=2
 
 Restart=on-failure
