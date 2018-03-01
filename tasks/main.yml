@@ -36,70 +36,71 @@
     mode: 0750
   tags:
     - k8s-worker
-
-- name: Install some network packages
-  apt:
-    state: installed
-    pkg: "{{item}}"
-  with_items:
-    - ebtables
-    - ethtool
-    - ipset
-    - conntrack
-    - iptables
-    - iptstate
-    - netstat-nat
-  tags:
-    - k8s-worker
-  when: ansible_os_family == "Debian"
-
-- name: Install some network packages
-  yum:
-    state: installed
-    name: "{{item}}"
-  with_items:
-    - ebtables
-    - ethtool
-    - ipset
-    - conntrack
-    - iptables
-    - iptstate
-    - net-tools
-  tags:
-    - k8s-worker
-  when: ansible_os_family == "RedHat"
-
 - block:
-  - name: Ensure required repositories are enabled
-    zypper_repository:
-      name: "{{item.name}}"
-      repo: "{{item.repo}}"
-      state: present
-      runrefresh: yes
-      auto_import_keys: yes
+  - name: Install some network packages
+    apt:
+      state: installed
+      pkg: "{{item}}"
     with_items:
-      - { name: "security:netfilter", repo: "http://download.opensuse.org/repositories/security:/netfilter/SLE_12/" }
-      - { name: "network:utilities", repo: "http://download.opensuse.org/repositories/network:/utilities/SLE_12_SP3/" }
-      - { name: security, repo: "http://download.opensuse.org/repositories/security/SLE_12_SP3/" }
+      - ebtables
+      - ethtool
+      - ipset
+      - conntrack
+      - iptables
+      - iptstate
+      - netstat-nat
     tags:
       - k8s-worker
+    when: ansible_os_family == "Debian"
 
   - name: Install some network packages
-    zypper:
-      state: present
+    yum:
+      state: installed
       name: "{{item}}"
     with_items:
       - ebtables
       - ethtool
       - ipset
-      - conntrack-tools
+      - conntrack
       - iptables
       - iptstate
       - net-tools
     tags:
       - k8s-worker
+    when: ansible_os_family == "RedHat"
 
-  when: ansible_os_family == "Suse"
+  - block:
+    - name: Ensure required repositories are enabled
+      zypper_repository:
+        name: "{{item.name}}"
+        repo: "{{item.repo}}"
+        state: present
+        runrefresh: yes
+        auto_import_keys: yes
+      with_items:
+        - { name: "security:netfilter", repo: "http://download.opensuse.org/repositories/security:/netfilter/SLE_12/" }
+        - { name: "network:utilities", repo: "http://download.opensuse.org/repositories/network:/utilities/SLE_12_SP3/" }
+        - { name: security, repo: "http://download.opensuse.org/repositories/security/SLE_12_SP3/" }
+      tags:
+        - k8s-worker
+
+    - name: Install some network packages
+      zypper:
+        state: present
+        name: "{{item}}"
+      with_items:
+        - ebtables
+        - ethtool
+        - ipset
+        - conntrack-tools
+        - iptables
+        - iptstate
+        - net-tools
+      tags:
+        - k8s-worker
+
+    when: ansible_os_family == "Suse"
+  when: k8s_worker_install_dependencies
 
 - name: Copy worker certificates (part 1)
   copy:

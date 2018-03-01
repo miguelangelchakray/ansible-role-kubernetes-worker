@@ -22,6 +22,7 @@ k8s_worker_certificates:
   - cert-kube-proxy-key.pem
 
 k8s_worker_download_dir: "/opt/tmp"
+k8s_worker_install_dependencies: True
 
 k8s_worker_kubelet_conf_dir: "/var/lib/kubelet"
 k8s_worker_kubelet_serialize_image_pulls: "false"
